@@ -24,4 +24,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN npm install
 
-ENTRYPOINT ["flask", "run"]
+ENTRYPOINT ["npm", "run", "watch"]
