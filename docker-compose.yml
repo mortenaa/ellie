@@ -2,15 +2,42 @@ version: '2.1'
 
 services:
 
-  server:
+  ellie-server:
+    container_name: ellie-server
     build:
       context: .
       dockerfile: Dockerfile.server
+    image: ellie-client:latest
+    ports:
+      - "5000:5000"
+    environment:
+      AWS_S3_BUCKET: your-bucket-name
+      AWS_ACCESS_KEY_ID: YOUR_AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: YOUR_AWS_SECRET_ACCESS_KEY
+      COOKIE_SECRET: COOKIESECRET1234567890
+      PACKAGE_SYNC_INTERVAL_MINUTES: 1
+      ENV: development
+      NODE_ENV: development
+      FLASK_APP: server/server.py
+      FLASK_DEBUG: 1
+    depends_on:
+      - minio
 
-  client:
+  ellie-client:
+    container_name: ellie-client
     build:
       context: .
       dockerfile: Dockerfile.client
+    image: ellie-client:latest
+    environment:
+      COOKIE_SECRET: COOKIESECRET1234567890
+      SERVER_HOSTNAME: http://ellie-server:5000
+      PACKAGE_SYNC_INTERVAL_MINUTES: 1
+      ENV: development
+      NODE_ENV: development
+      CDN_BASE: https://production-cdn.ellie-app.com
+    depends_on:
+      - ellie-server
 
   minio:
     image: minio/minio
