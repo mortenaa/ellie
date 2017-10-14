@@ -4,6 +4,8 @@ FROM python:3
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install --yes nodejs
 
+RUN npm install -g elm
+
 RUN mkdir /opt/ellie/
 WORKDIR /opt/ellie/
 

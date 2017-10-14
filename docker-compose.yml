@@ -7,9 +7,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.server
-    image: ellie-client:latest
+    image: ellie-server:latest
     ports:
       - "5000:5000"
+      - "8000:8000"
     environment:
       AWS_S3_BUCKET: your-bucket-name
       AWS_ACCESS_KEY_ID: YOUR_AWS_ACCESS_KEY_ID
@@ -30,9 +31,7 @@ services:
       dockerfile: Dockerfile.client
     image: ellie-client:latest
     environment:
-      COOKIE_SECRET: COOKIESECRET1234567890
       SERVER_HOSTNAME: http://ellie-server:5000
-      PACKAGE_SYNC_INTERVAL_MINUTES: 1
       ENV: development
       NODE_ENV: development
       CDN_BASE: https://production-cdn.ellie-app.com
